@@ -30,8 +30,10 @@ void EdgeDetection::run()
 	imshow("Lena", img);
 
 	// Call each function of edge detection
-	canny();
-	canny2();
+	// canny();
+	// canny2();
+	sobel();
+	laplace();
 
 	// Wait input
 	waitKey();
@@ -138,8 +140,38 @@ void EdgeDetection::sobel()
 
 void EdgeDetection::laplace()
 {
+
+	/****************Laplace Function Parameters****************
+
+	第一个参数，InputArray类型的image，输入图像，即源图像，填Mat类的对象即可，且需为单通道8位图像。
+	第二个参数，OutputArray类型的edges，输出的边缘图，需要和源图片有一样的尺寸和通道数。
+	第三个参数，int类型的ddept，目标图像的深度。
+	第四个参数，int类型的ksize，用于计算二阶导数的滤波器的孔径尺寸，大小必须为正奇数，且有默认值1。
+	第五个参数，double类型的scale，计算拉普拉斯值的时候可选的比例因子，有默认值1。
+	第六个参数，double类型的delta，表示在结果存入目标图（第二个参数dst）之前可选的delta值，有默认值0。
+	第七个参数， int类型的borderType，边界模式，默认值为BORDER_DEFAULT。这个参数可以在官方文档中borderInterpolate()处得到更详细的信息。
+
+	****************Laplace Function Parameters****************/
+
 	/***TODO***/
 	// output Laplace edge detection
+
+	Mat src, src_gray, dst, abs_dst;
+
+	// 1. Gaussian Blur remove noise
+	GaussianBlur(img, src, Size(3, 3), 0, 0, BORDER_DEFAULT);
+
+	// 2. Convert to gray scale image
+	cvtColor(src, src_gray, CV_RGB2GRAY);
+
+	// 3. Call Laplace Func
+	Laplacian(src_gray, dst, CV_16S, 3, 1, 0, BORDER_DEFAULT);
+ 
+	// 4. Calculate Abs() and convert to 8-bit
+	convertScaleAbs(dst, abs_dst);
+
+	// 5. Show the effect image
+	imshow("Lena_Laplace", abs_dst);
 }
 
 void EdgeDetection::scharr()
