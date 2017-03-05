@@ -30,8 +30,8 @@ void EdgeDetection::run()
 	imshow("Original", img);
 
 	// Call each function of edge detection
-	// canny();
-	// canny2();
+	canny();
+	canny2();
 	sobel();
 	laplace();
 	scharr();
