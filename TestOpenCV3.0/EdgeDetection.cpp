@@ -27,13 +27,14 @@ void EdgeDetection::run()
 	// this func would call all the edge detection funcs
 
 	// Show the original image
-	imshow("Lena", img);
+	imshow("Original", img);
 
 	// Call each function of edge detection
 	// canny();
 	// canny2();
 	sobel();
 	laplace();
+	scharr();
 
 	// Wait input
 	waitKey();
@@ -41,7 +42,6 @@ void EdgeDetection::run()
 
 void EdgeDetection::canny()
 {
-
 	/****************Canny Function Parameters****************
 
 	第一个参数，InputArray类型的image，输入图像，即源图像，填Mat类的对象即可，且需为单通道8位图像。
@@ -61,7 +61,7 @@ void EdgeDetection::canny()
 	Canny(img, out, 150, 100, 3);
 
 	// 2. Show the effect image
-	imshow("Lena_Canny", out);
+	imshow("Canny", out);
 }
 
 void EdgeDetection::canny2()
@@ -91,7 +91,7 @@ void EdgeDetection::canny2()
 	img.copyTo(dst, edge);
  
 	// 7. Show the effect image
-	imshow("Lena_Canny2", dst);
+	imshow("Canny2", dst);
 }
 
 void EdgeDetection::sobel() 
@@ -117,30 +117,28 @@ void EdgeDetection::sobel()
 	/***TODO***/
 	// output Sobel edge detection
  
-	// 0. Create grad_x and grad_y
 	Mat grad_x, grad_y;
 	Mat abs_grad_x, abs_grad_y, dst;
 
 	// 1. Compute grad_x
 	Sobel(img, grad_x, CV_16S, 1, 0, 3, 1, 1, BORDER_DEFAULT);
 	convertScaleAbs(grad_x, abs_grad_x);
-	//imshow("Lena_grad_x", abs_grad_x);
+	//imshow("Sobel_X", abs_grad_x);
 
 	// 2. Compute grad_y
 	Sobel(img, grad_y, CV_16S, 0, 1, 3, 1, 1, BORDER_DEFAULT);
 	convertScaleAbs(grad_y, abs_grad_y);
-	//imshow("Lena_grad_y", abs_grad_y);
+	//imshow("Sobel_Y", abs_grad_y);
 
 	// 3. Combine them together
 	addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, dst);
 
 	// 4. Show the effect image
-	imshow("Lena_Sobel", dst);
+	imshow("Sobel", dst);
 }
 
 void EdgeDetection::laplace()
 {
-
 	/****************Laplace Function Parameters****************
 
 	第一个参数，InputArray类型的image，输入图像，即源图像，填Mat类的对象即可，且需为单通道8位图像。
@@ -171,13 +169,50 @@ void EdgeDetection::laplace()
 	convertScaleAbs(dst, abs_dst);
 
 	// 5. Show the effect image
-	imshow("Lena_Laplace", abs_dst);
+	imshow("Laplace", abs_dst);
 }
 
 void EdgeDetection::scharr()
 {
+
+	/****************Scharr Function Parameters****************
+
+	第一个参数，InputArray 类型的src，为输入图像，填Mat类型即可。
+	第二个参数，OutputArray类型的dst，即目标图像，函数的输出参数，需要和源图片有一样的尺寸和类型。
+	第三个参数，int类型的ddepth，输出图像的深度，支持如下src.depth()和ddepth的组合：
+	若src.depth() = CV_8U, 取ddepth =-1/CV_16S/CV_32F/CV_64F
+	若src.depth() = CV_16U/CV_16S, 取ddepth =-1/CV_32F/CV_64F
+	若src.depth() = CV_32F, 取ddepth =-1/CV_32F/CV_64F
+	若src.depth() = CV_64F, 取ddepth = -1/CV_64F
+	第四个参数，int类型dx，x方向上的差分阶数。
+	第五个参数，int类型dy，y方向上的差分阶数。
+	第六个参数，double类型的scale，计算导数值时可选的缩放因子，默认值是1，表示默认情况下是没有应用缩放的。我们可以在文档中查阅getDerivKernels的相关介绍，来得到这个参数的更多信息。
+	第七个参数，double类型的delta，表示在结果存入目标图（第二个参数dst）之前可选的delta值，有默认值0。
+	第八个参数， int类型的borderType，我们的老朋友了（万年是最后一个参数），边界模式，默认值为BORDER_DEFAULT。这个参数可以在官方文档中borderInterpolate处得到更详细的信息。
+
+	****************Scharr Function Parameters****************/
+
 	/***TODO***/
 	// output Scharr edge detection
+ 
+	Mat grad_x, grad_y;
+	Mat abs_grad_x, abs_grad_y, dst;
+
+	// 1. Compute the X-gradient
+	Scharr(img, grad_x, CV_16S, 1, 0, 1, 0, BORDER_DEFAULT);
+	convertScaleAbs(grad_x, abs_grad_x);
+	//imshow("Scharr_X", abs_grad_x);
+
+	// 2. Compute the Y-gradient
+	Scharr(img, grad_y, CV_16S, 0, 1, 1, 0, BORDER_DEFAULT);
+	convertScaleAbs(grad_y, abs_grad_y);
+	//imshow("Scharr_Y", abs_grad_y);
+ 
+	// 3. Combine them together
+	addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, dst);
+
+	// 4. Show the effect image
+	imshow("Scharr", dst);
 }
 
 int main()
