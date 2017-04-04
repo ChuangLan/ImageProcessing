@@ -5,11 +5,15 @@
 #include <opencv2/opencv.hpp>  
 #include<opencv2/highgui/highgui.hpp>  
 #include<opencv2/imgproc/imgproc.hpp>  
+
+#include <iostream> 
+#include <vector>
+#include <string>
 class EdgeDetection
 {
 public:
 	EdgeDetection();
-	EdgeDetection(const cv::Mat& img);
+	EdgeDetection(const cv::Mat& img, std::string name);
 	~EdgeDetection();
 	void run();
 	void canny();
@@ -20,5 +24,6 @@ public:
 	void output(const cv::Mat& img);
 private:
 	cv::Mat img;
+	std::string img_name;
 };
 

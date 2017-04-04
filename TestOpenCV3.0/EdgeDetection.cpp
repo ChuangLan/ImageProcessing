@@ -1,6 +1,5 @@
 #include "EdgeDetection.h" 
-#include <iostream> 
-#include <vector>
+
 
 
 
@@ -11,9 +10,10 @@ EdgeDetection::EdgeDetection()
 {
 }
 
-EdgeDetection::EdgeDetection(const Mat& image)
+EdgeDetection::EdgeDetection(const Mat& image, string name)
 {
 	img = image.clone();
+	img_name = name;
 }
 
 
@@ -32,10 +32,10 @@ void EdgeDetection::run()
 
 	// Call each function of edge detection
 	canny();
-	/*canny2();
-	sobel();
-	laplace();
-	scharr();*/
+	//canny2();
+	//sobel();
+	//laplace();
+	//scharr();
 
 	// Wait input
 	waitKey();
@@ -229,30 +229,33 @@ void EdgeDetection::scharr()
 
 void EdgeDetection::output(const cv::Mat & src)
 {
-	std::vector<Point> points;
-	//Loop over each pixel and create a point
+	// Write to the file. 
+	ofstream outfile(img_name.substr(0, img_name.find(".")) + ".txt");
+	// The first line define row and cols
+	outfile << src.cols << " " << src.rows << endl;
+	//Loop over each pixel and write to the file
 	for (int x = 0; x < src.cols; x++) {
 		for (int y = 0; y < src.rows; y++) {
 			if ((int)src.at<uchar>(x, y) > 0) {
-				points.push_back(cv::Point(x, y));
-				cout << (int)src.at<uchar>(x, y) << endl;
+				outfile << x << " " << y << endl;
+				//cout << (int)src.at<uchar>(x, y) << endl;
 			}
 		}
 	}
-	//Print out results
-	std::cout << "points.size(): " << points.size() << endl;
+	outfile.close();
 }
 
 int main()
 {
-	Mat img = imread("Bucket.jpg");
+	string img_name = "Lena.jpg";
+	Mat img = imread(img_name);
 	if (img.empty())
 	{
 		cout << "error";
 		return -1;
 	}
 
-	EdgeDetection impl = EdgeDetection(img);
+	EdgeDetection impl = EdgeDetection(img, img_name);
 	impl.run();
 
 	return 0;
