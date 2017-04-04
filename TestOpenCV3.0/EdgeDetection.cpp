@@ -1,5 +1,6 @@
 #include "EdgeDetection.h" 
-#include <iostream>  
+#include <iostream> 
+#include <vector>
 
 
 
@@ -31,10 +32,10 @@ void EdgeDetection::run()
 
 	// Call each function of edge detection
 	canny();
-	canny2();
+	/*canny2();
 	sobel();
 	laplace();
-	scharr();
+	scharr();*/
 
 	// Wait input
 	waitKey();
@@ -57,11 +58,22 @@ void EdgeDetection::canny()
 	// output easy Canny edge detection
 	Mat out;
 
-	// 1. Call the Canny() function
+	// Call the Canny() function
 	Canny(img, out, 150, 100, 3);
-
-	// 2. Show the effect image
+	// Adaptive Threshold
+	/*int blockSize = 25;
+	int constValue = 10;
+	Mat local;
+	adaptiveThreshold(out, local, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY_INV, blockSize, constValue);
+	imshow("Local", local);*/
+	// Global Threshold
+	/*Mat global;
+	int th = 240;
+	threshold(out, global, th, 255, CV_THRESH_BINARY_INV);
+	imshow("Global", global);*/
+	// Show the effect image
 	imshow("Canny", out);
+	output(out);	
 }
 
 void EdgeDetection::canny2()
@@ -215,9 +227,25 @@ void EdgeDetection::scharr()
 	imshow("Scharr", dst);
 }
 
+void EdgeDetection::output(const cv::Mat & src)
+{
+	std::vector<Point> points;
+	//Loop over each pixel and create a point
+	for (int x = 0; x < src.cols; x++) {
+		for (int y = 0; y < src.rows; y++) {
+			if ((int)src.at<uchar>(x, y) > 0) {
+				points.push_back(cv::Point(x, y));
+				cout << (int)src.at<uchar>(x, y) << endl;
+			}
+		}
+	}
+	//Print out results
+	std::cout << "points.size(): " << points.size() << endl;
+}
+
 int main()
 {
-	Mat img = imread("Lena.jpg");
+	Mat img = imread("Bucket.jpg");
 	if (img.empty())
 	{
 		cout << "error";

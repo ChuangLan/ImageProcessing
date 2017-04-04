@@ -17,7 +17,7 @@ public:
 	void sobel();
 	void laplace();
 	void scharr();
-
+	void output(const cv::Mat& img);
 private:
 	cv::Mat img;
 };
