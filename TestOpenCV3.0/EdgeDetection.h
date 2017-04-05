@@ -9,6 +9,7 @@
 #include <iostream> 
 #include <vector>
 #include <string>
+#include <fstream>
 class EdgeDetection
 {
 public:
@@ -22,6 +23,7 @@ public:
 	void laplace();
 	void scharr();
 	void output(const cv::Mat& img);
+	void read_file(std::string filename);
 private:
 	cv::Mat img;
 	std::string img_name;

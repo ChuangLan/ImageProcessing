@@ -59,7 +59,7 @@ void EdgeDetection::canny()
 	Mat out;
 
 	// Call the Canny() function
-	Canny(img, out, 150, 100, 3);
+	Canny(img, out, 255, 100, 3);
 	// Adaptive Threshold
 	/*int blockSize = 25;
 	int constValue = 10;
@@ -73,7 +73,8 @@ void EdgeDetection::canny()
 	imshow("Global", global);*/
 	// Show the effect image
 	imshow("Canny", out);
-	output(out);	
+	output(out);
+	// read_file("Bucket.txt");
 }
 
 void EdgeDetection::canny2()
@@ -232,10 +233,10 @@ void EdgeDetection::output(const cv::Mat & src)
 	// Write to the file. 
 	ofstream outfile(img_name.substr(0, img_name.find(".")) + ".txt");
 	// The first line define row and cols
-	outfile << src.cols << " " << src.rows << endl;
-	//Loop over each pixel and write to the file
-	for (int x = 0; x < src.cols; x++) {
-		for (int y = 0; y < src.rows; y++) {
+	outfile << src.rows << " " << src.cols << endl;
+	// Loop over each pixel and write to the file
+	for (int x = 0; x < src.rows; x++) {
+		for (int y = 0; y < src.cols; y++) {
 			if ((int)src.at<uchar>(x, y) > 0) {
 				outfile << x << " " << y << endl;
 				//cout << (int)src.at<uchar>(x, y) << endl;
@@ -243,11 +244,24 @@ void EdgeDetection::output(const cv::Mat & src)
 		}
 	}
 	outfile.close();
+
+}
+
+void EdgeDetection::read_file(std::string filename)
+{
+	std::ifstream infile(filename);
+	int rows, cols;
+	infile >> rows >> cols;
+	int x, y;
+	while (infile >> x >> y) {
+		cout << x - cols / 2 << " " << rows / 2 - y << endl;
+	}
+	infile.close();
 }
 
 int main()
 {
-	string img_name = "Lena.jpg";
+	string img_name = "Banana.jpeg";
 	Mat img = imread(img_name);
 	if (img.empty())
 	{
