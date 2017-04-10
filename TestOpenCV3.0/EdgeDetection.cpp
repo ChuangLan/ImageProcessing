@@ -259,19 +259,20 @@ void EdgeDetection::read_file(std::string filename)
 	infile.close();
 }
 
-int main()
+int main(int argc, char **argv)
 {
-	string img_name = "Banana.jpeg";
-	Mat img = imread(img_name);
-	if (img.empty())
-	{
-		cout << "error";
-		return -1;
+	for (int i = 1; i < argc; i++) {
+		string img_name = argv[i];
+		Mat img = imread(img_name);
+		if (img.empty())
+		{
+			cout << "error";
+			return -1;
+		}
+
+		EdgeDetection impl = EdgeDetection(img, img_name);
+		impl.run();
 	}
-
-	EdgeDetection impl = EdgeDetection(img, img_name);
-	impl.run();
-
 	return 0;
 
 }
