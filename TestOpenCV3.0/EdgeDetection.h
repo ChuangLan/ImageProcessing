@@ -17,7 +17,7 @@ public:
 	EdgeDetection(const cv::Mat& img, std::string name);
 	~EdgeDetection();
 	void run();
-	void canny();
+	void canny_contour();
 	void canny2();
 	void sobel();
 	void laplace();
