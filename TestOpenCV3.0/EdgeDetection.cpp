@@ -1,7 +1,4 @@
-#include "EdgeDetection.h" 
-
-
-
+ï»¿#include "EdgeDetection.h" 
 
 using namespace cv;
 using namespace std;
@@ -21,219 +18,7 @@ EdgeDetection::~EdgeDetection()
 {
 }
 
-//void EdgeDetection::run() 
-//{
-//	/***TODO***/
-//	// called in the main func
-//	// this func would call all the edge detection funcs
-//
-//	// Show the original image
-//	imshow("Original", img);
-//
-//	// Call each function of edge detection
-//	canny_contour();
-//	//canny2();
-//	//sobel();
-//	//laplace();
-//	//scharr();
-//
-//	// Wait input
-//	waitKey();
-//}
-//
-//void EdgeDetection::canny_contour()
-//{
-//	/****************Canny Function Parameters****************
-//
-//	µÚÒ»¸ö²ÎÊı£¬InputArrayÀàĞÍµÄimage£¬ÊäÈëÍ¼Ïñ£¬¼´Ô´Í¼Ïñ£¬ÌîMatÀàµÄ¶ÔÏó¼´¿É£¬ÇÒĞèÎªµ¥Í¨µÀ8Î»Í¼Ïñ¡£
-//	µÚ¶ş¸ö²ÎÊı£¬OutputArrayÀàĞÍµÄedges£¬Êä³öµÄ±ßÔµÍ¼£¬ĞèÒªºÍÔ´Í¼Æ¬ÓĞÒ»ÑùµÄ³ß´çºÍÀàĞÍ¡£
-//	µÚÈı¸ö²ÎÊı£¬doubleÀàĞÍµÄthreshold1£¬µÚÒ»¸öÖÍºóĞÔãĞÖµ¡£
-//	µÚËÄ¸ö²ÎÊı£¬doubleÀàĞÍµÄthreshold2£¬µÚ¶ş¸öÖÍºóĞÔãĞÖµ¡£
-//	µÚÎå¸ö²ÎÊı£¬intÀàĞÍµÄapertureSize£¬±íÊ¾Ó¦ÓÃSobelËã×ÓµÄ¿×¾¶´óĞ¡£¬ÆäÓĞÄ¬ÈÏÖµ3¡£
-//	µÚÁù¸ö²ÎÊı£¬boolÀàĞÍµÄL2gradient£¬Ò»¸ö¼ÆËãÍ¼ÏñÌİ¶È·ùÖµµÄ±êÊ¶£¬ÓĞÄ¬ÈÏÖµfalse¡£
-//
-//	****************Canny Function Parameters****************/
-//
-//	/***TODO***/
-//	// output easy Canny edge detection
-//
-//
-//	Mat canny_output;
-//	vector<vector<Point> > contours;
-//	vector<Vec4i> hierarchy;
-//	// Call the Canny() function
-//	Canny(img, canny_output, thresh, thresh*2, 3);
-//	// Find contours
-//	findContours(canny_output, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
-//
-//	// Draw contours
-//	Mat drawing = Mat::zeros(canny_output.size(), CV_8UC3);
-//	for (size_t i = 0; i< contours.size(); i++)
-//	{
-//		Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-//		drawContours(drawing, contours, (int)i, color, 2, 8, hierarchy, 0, Point());
-//	}
-//	// Show in a window
-//	namedWindow("Contours", WINDOW_AUTOSIZE);
-//	imshow("Contours", drawing);
-//
-//	// read_file("Bucket.txt");
-//
-//	// output(drawing);
-//}
-//
-//void EdgeDetection::canny2()
-//{
-//	/***TODO***/
-//	// output better Canny edge detection
-//	// This function will output the RGB version of Canny output image
-//
-//	Mat dst, edge, gray;
-// 
-//	// 1. Create mat with same size and type (dst)
-//	dst.create(img.size(), img.type());
-//
-//	// 2. Transfer the original to grayScale image
-//	cvtColor(img, gray, CV_BGR2GRAY);
-// 
-//	// 3. Use 3*3 core to reduce noise
-//	blur(gray, edge, Size(3, 3));
-//
-//	// 4. Run Canny function
-//	Canny(edge, edge, 150, 100, 3);
-// 
-//	// 5. Set all element as 0 in dst
-//	dst = Scalar::all(0);
-//
-//	// 6. Use the edge computed by canny as mask, and copy source image to dst
-//	img.copyTo(dst, edge);
-// 
-//	// 7. Show the effect image
-//	imshow("Canny2", dst);
-//}
-//
-//void EdgeDetection::sobel() 
-//{
-//	/****************Sobel Function Parameters****************
-//
-//	µÚÒ»¸ö²ÎÊı£¬InputArray ÀàĞÍµÄsrc£¬ÎªÊäÈëÍ¼Ïñ£¬ÌîMatÀàĞÍ¼´¿É¡£
-//	µÚ¶ş¸ö²ÎÊı£¬OutputArrayÀàĞÍµÄdst£¬¼´Ä¿±êÍ¼Ïñ£¬º¯ÊıµÄÊä³ö²ÎÊı£¬ĞèÒªºÍÔ´Í¼Æ¬ÓĞÒ»ÑùµÄ³ß´çºÍÀàĞÍ¡£
-//	µÚÈı¸ö²ÎÊı£¬intÀàĞÍµÄddepth£¬Êä³öÍ¼ÏñµÄÉî¶È£¬Ö§³ÖÈçÏÂsrc.depth()ºÍddepthµÄ×éºÏ£º
-//	Èôsrc.depth() = CV_8U, È¡ddepth =-1/CV_16S/CV_32F/CV_64F
-//	Èôsrc.depth() = CV_16U/CV_16S, È¡ddepth =-1/CV_32F/CV_64F
-//	Èôsrc.depth() = CV_32F, È¡ddepth =-1/CV_32F/CV_64F
-//	Èôsrc.depth() = CV_64F, È¡ddepth = -1/CV_64F
-//	µÚËÄ¸ö²ÎÊı£¬intÀàĞÍdx£¬x ·½ÏòÉÏµÄ²î·Ö½×Êı¡£
-//	µÚÎå¸ö²ÎÊı£¬intÀàĞÍdy£¬y·½ÏòÉÏµÄ²î·Ö½×Êı¡£
-//	µÚÁù¸ö²ÎÊı£¬intÀàĞÍksize£¬ÓĞÄ¬ÈÏÖµ3£¬±íÊ¾SobelºËµÄ´óĞ¡;±ØĞëÈ¡1£¬3£¬5»ò7¡£
-//	µÚÆß¸ö²ÎÊı£¬doubleÀàĞÍµÄscale£¬¼ÆËãµ¼ÊıÖµÊ±¿ÉÑ¡µÄËõ·ÅÒò×Ó£¬Ä¬ÈÏÖµÊÇ1£¬±íÊ¾Ä¬ÈÏÇé¿öÏÂÊÇÃ»ÓĞÓ¦ÓÃËõ·ÅµÄ¡£ÎÒÃÇ¿ÉÒÔÔÚÎÄµµÖĞ²éÔÄgetDerivKernelsµÄÏà¹Ø½éÉÜ£¬À´µÃµ½Õâ¸ö²ÎÊıµÄ¸ü¶àĞÅÏ¢¡£
-//	µÚ°Ë¸ö²ÎÊı£¬doubleÀàĞÍµÄdelta£¬±íÊ¾ÔÚ½á¹û´æÈëÄ¿±êÍ¼£¨µÚ¶ş¸ö²ÎÊıdst£©Ö®Ç°¿ÉÑ¡µÄdeltaÖµ£¬ÓĞÄ¬ÈÏÖµ0¡£
-//	µÚ¾Å¸ö²ÎÊı£¬ intÀàĞÍµÄborderType£¬ÎÒÃÇµÄÀÏÅóÓÑÁË£¨ÍòÄêÊÇ×îºóÒ»¸ö²ÎÊı£©£¬±ß½çÄ£Ê½£¬Ä¬ÈÏÖµÎªBORDER_DEFAULT¡£Õâ¸ö²ÎÊı¿ÉÒÔÔÚ¹Ù·½ÎÄµµÖĞborderInterpolate´¦µÃµ½¸üÏêÏ¸µÄĞÅÏ¢¡£
-//
-//	****************Sobel Function Parameters****************/
-//
-//	/***TODO***/
-//	// output Sobel edge detection
-// 
-//	Mat grad_x, grad_y;
-//	Mat abs_grad_x, abs_grad_y, dst;
-//
-//	// 1. Compute grad_x
-//	Sobel(img, grad_x, CV_16S, 1, 0, 3, 1, 1, BORDER_DEFAULT);
-//	convertScaleAbs(grad_x, abs_grad_x);
-//	//imshow("Sobel_X", abs_grad_x);
-//
-//	// 2. Compute grad_y
-//	Sobel(img, grad_y, CV_16S, 0, 1, 3, 1, 1, BORDER_DEFAULT);
-//	convertScaleAbs(grad_y, abs_grad_y);
-//	//imshow("Sobel_Y", abs_grad_y);
-//
-//	// 3. Combine them together
-//	addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, dst);
-//
-//	// 4. Show the effect image
-//	imshow("Sobel", dst);
-//}
-//
-//void EdgeDetection::laplace()
-//{
-//	/****************Laplace Function Parameters****************
-//
-//	µÚÒ»¸ö²ÎÊı£¬InputArrayÀàĞÍµÄimage£¬ÊäÈëÍ¼Ïñ£¬¼´Ô´Í¼Ïñ£¬ÌîMatÀàµÄ¶ÔÏó¼´¿É£¬ÇÒĞèÎªµ¥Í¨µÀ8Î»Í¼Ïñ¡£
-//	µÚ¶ş¸ö²ÎÊı£¬OutputArrayÀàĞÍµÄedges£¬Êä³öµÄ±ßÔµÍ¼£¬ĞèÒªºÍÔ´Í¼Æ¬ÓĞÒ»ÑùµÄ³ß´çºÍÍ¨µÀÊı¡£
-//	µÚÈı¸ö²ÎÊı£¬intÀàĞÍµÄddept£¬Ä¿±êÍ¼ÏñµÄÉî¶È¡£
-//	µÚËÄ¸ö²ÎÊı£¬intÀàĞÍµÄksize£¬ÓÃÓÚ¼ÆËã¶ş½×µ¼ÊıµÄÂË²¨Æ÷µÄ¿×¾¶³ß´ç£¬´óĞ¡±ØĞëÎªÕıÆæÊı£¬ÇÒÓĞÄ¬ÈÏÖµ1¡£
-//	µÚÎå¸ö²ÎÊı£¬doubleÀàĞÍµÄscale£¬¼ÆËãÀ­ÆÕÀ­Ë¹ÖµµÄÊ±ºò¿ÉÑ¡µÄ±ÈÀıÒò×Ó£¬ÓĞÄ¬ÈÏÖµ1¡£
-//	µÚÁù¸ö²ÎÊı£¬doubleÀàĞÍµÄdelta£¬±íÊ¾ÔÚ½á¹û´æÈëÄ¿±êÍ¼£¨µÚ¶ş¸ö²ÎÊıdst£©Ö®Ç°¿ÉÑ¡µÄdeltaÖµ£¬ÓĞÄ¬ÈÏÖµ0¡£
-//	µÚÆß¸ö²ÎÊı£¬ intÀàĞÍµÄborderType£¬±ß½çÄ£Ê½£¬Ä¬ÈÏÖµÎªBORDER_DEFAULT¡£Õâ¸ö²ÎÊı¿ÉÒÔÔÚ¹Ù·½ÎÄµµÖĞborderInterpolate()´¦µÃµ½¸üÏêÏ¸µÄĞÅÏ¢¡£
-//
-//	****************Laplace Function Parameters****************/
-//
-//	/***TODO***/
-//	// output Laplace edge detection
-//
-//	Mat src, src_gray, dst, abs_dst;
-//
-//	// 1. Gaussian Blur remove noise
-//	GaussianBlur(img, src, Size(3, 3), 0, 0, BORDER_DEFAULT);
-//
-//	// 2. Convert to gray scale image
-//	cvtColor(src, src_gray, CV_RGB2GRAY);
-//
-//	// 3. Call Laplace Func
-//	Laplacian(src_gray, dst, CV_16S, 3, 1, 0, BORDER_DEFAULT);
-// 
-//	// 4. Calculate Abs() and convert to 8-bit
-//	convertScaleAbs(dst, abs_dst);
-//
-//	// 5. Show the effect image
-//	imshow("Laplace", abs_dst);
-//}
-//
-//void EdgeDetection::scharr()
-//{
-//
-//	/****************Scharr Function Parameters****************
-//
-//	µÚÒ»¸ö²ÎÊı£¬InputArray ÀàĞÍµÄsrc£¬ÎªÊäÈëÍ¼Ïñ£¬ÌîMatÀàĞÍ¼´¿É¡£
-//	µÚ¶ş¸ö²ÎÊı£¬OutputArrayÀàĞÍµÄdst£¬¼´Ä¿±êÍ¼Ïñ£¬º¯ÊıµÄÊä³ö²ÎÊı£¬ĞèÒªºÍÔ´Í¼Æ¬ÓĞÒ»ÑùµÄ³ß´çºÍÀàĞÍ¡£
-//	µÚÈı¸ö²ÎÊı£¬intÀàĞÍµÄddepth£¬Êä³öÍ¼ÏñµÄÉî¶È£¬Ö§³ÖÈçÏÂsrc.depth()ºÍddepthµÄ×éºÏ£º
-//	Èôsrc.depth() = CV_8U, È¡ddepth =-1/CV_16S/CV_32F/CV_64F
-//	Èôsrc.depth() = CV_16U/CV_16S, È¡ddepth =-1/CV_32F/CV_64F
-//	Èôsrc.depth() = CV_32F, È¡ddepth =-1/CV_32F/CV_64F
-//	Èôsrc.depth() = CV_64F, È¡ddepth = -1/CV_64F
-//	µÚËÄ¸ö²ÎÊı£¬intÀàĞÍdx£¬x·½ÏòÉÏµÄ²î·Ö½×Êı¡£
-//	µÚÎå¸ö²ÎÊı£¬intÀàĞÍdy£¬y·½ÏòÉÏµÄ²î·Ö½×Êı¡£
-//	µÚÁù¸ö²ÎÊı£¬doubleÀàĞÍµÄscale£¬¼ÆËãµ¼ÊıÖµÊ±¿ÉÑ¡µÄËõ·ÅÒò×Ó£¬Ä¬ÈÏÖµÊÇ1£¬±íÊ¾Ä¬ÈÏÇé¿öÏÂÊÇÃ»ÓĞÓ¦ÓÃËõ·ÅµÄ¡£ÎÒÃÇ¿ÉÒÔÔÚÎÄµµÖĞ²éÔÄgetDerivKernelsµÄÏà¹Ø½éÉÜ£¬À´µÃµ½Õâ¸ö²ÎÊıµÄ¸ü¶àĞÅÏ¢¡£
-//	µÚÆß¸ö²ÎÊı£¬doubleÀàĞÍµÄdelta£¬±íÊ¾ÔÚ½á¹û´æÈëÄ¿±êÍ¼£¨µÚ¶ş¸ö²ÎÊıdst£©Ö®Ç°¿ÉÑ¡µÄdeltaÖµ£¬ÓĞÄ¬ÈÏÖµ0¡£
-//	µÚ°Ë¸ö²ÎÊı£¬ intÀàĞÍµÄborderType£¬ÎÒÃÇµÄÀÏÅóÓÑÁË£¨ÍòÄêÊÇ×îºóÒ»¸ö²ÎÊı£©£¬±ß½çÄ£Ê½£¬Ä¬ÈÏÖµÎªBORDER_DEFAULT¡£Õâ¸ö²ÎÊı¿ÉÒÔÔÚ¹Ù·½ÎÄµµÖĞborderInterpolate´¦µÃµ½¸üÏêÏ¸µÄĞÅÏ¢¡£
-//
-//	****************Scharr Function Parameters****************/
-//
-//	/***TODO***/
-//	// output Scharr edge detection
-// 
-//	Mat grad_x, grad_y;
-//	Mat abs_grad_x, abs_grad_y, dst;
-//
-//	// 1. Compute the X-gradient
-//	Scharr(img, grad_x, CV_16S, 1, 0, 1, 0, BORDER_DEFAULT);
-//	convertScaleAbs(grad_x, abs_grad_x);
-//	//imshow("Scharr_X", abs_grad_x);
-//
-//	// 2. Compute the Y-gradient
-//	Scharr(img, grad_y, CV_16S, 0, 1, 1, 0, BORDER_DEFAULT);
-//	convertScaleAbs(grad_y, abs_grad_y);
-//	//imshow("Scharr_Y", abs_grad_y);
-// 
-//	// 3. Combine them together
-//	addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, dst);
-//
-//	// 4. Show the effect image
-//	imshow("Scharr", dst);
-//}
-
-void EdgeDetection::output(const cv::Mat & src)
+void output(const cv::Mat & src, string img_name)
 {
 	// Write to the file. 
 	ofstream outfile(img_name.substr(0, img_name.find(".")) + ".txt");
@@ -251,51 +36,89 @@ void EdgeDetection::output(const cv::Mat & src)
 	outfile.close();
 
 }
-
-void EdgeDetection::read_file(std::string filename)
-{
-	std::ifstream infile(filename);
-	int rows, cols;
-	infile >> rows >> cols;
-	int x, y;
-	while (infile >> x >> y) {
-		cout << x - cols / 2 << " " << rows / 2 - y << endl;
-	}
-	infile.close();
-}
+//
+//void EdgeDetection::read_file(std::string filename)
+//{
+//	std::ifstream infile(filename);
+//	int rows, cols;
+//	infile >> rows >> cols;
+//	int x, y;
+//	while (infile >> x >> y) {
+//		cout << x - cols / 2 << " " << rows / 2 - y << endl;
+//	}
+//	infile.close();
+//}
 
 Mat src; Mat src_gray;
+int mode = 0;
+int color = 0;
 int thresh = 100;
 int max_thresh = 255;
+int brush_size = 2;
+int max_brush_size = 50;
+IplImage* contour_image = 0;
+CvPoint prev_pt = { -1,-1 };
+
 RNG rng(12345);
+
+int main(int argc, char ** argv);
 
 /// Function header
 void thresh_callback(int, void*);
+void brush_callback(int, void*);
+void on_mouse(int event, int x, int y, int flags, void* zhang);
 
 int main(int argc, char **argv)
 {
-	for (int i = 1; i < argc; i++) {
+	if (argc < 2) 
+		return 0;
 
-		src = imread(argv[i], 1);
-		/// Convert image to gray and blur it
-		cvtColor(src, src_gray, CV_BGR2GRAY);
-		blur(src_gray, src_gray, Size(3, 3));
+	printf("Hot keys: \n"
+				"\tESC - quit the program\n"
+				"\te - erase the edge\n"
+				"\td draw edge\n"
+				"\ts save the edge file\n");
 
-		/// Create Window
-		char* source_window = "Source";
-		namedWindow(source_window, CV_WINDOW_AUTOSIZE);
-		imshow(source_window, src);
+	string file_name = argv[1];
+	src = imread(file_name, 1);
 
-		createTrackbar(" Canny thresh:", "Source", &thresh, max_thresh, thresh_callback);
-		thresh_callback(0, 0);
+	//Convert image to gray and blur it
+	cvtColor(src, src_gray, CV_BGR2GRAY);
+	blur(src_gray, src_gray, Size(3, 3));
 
-		waitKey(0);
+	//Create Window
+	char* source_window = "Source";
+	namedWindow(source_window, CV_WINDOW_AUTOSIZE);
+	imshow(source_window, src);
+	createTrackbar("Canny Thresh", "Source", &thresh, max_thresh, thresh_callback);
+	createTrackbar("Brush Size", "Source", &brush_size, max_brush_size, brush_callback);
+
+	thresh_callback(0, 0);
+	brush_callback(0,0);
+	cvSetMouseCallback("Contours", on_mouse, 0);
+
+	for (;;)
+	{
+		int c = waitKey(0);
+
+		if ((char)c == 'd')
+			color = 255;
+
+		if ((char)c == 'e')
+			color = 0;
+
+		if ((char)c == 's') {
+			Mat image = cvarrToMat(contour_image);
+			output(image, file_name);
+			break;
+		}
 	}
+
 	return 0;
 
 }
 
-/** @function thresh_callback */
+/** @functions */
 void thresh_callback(int, void*)
 {
 	Mat canny_output;
@@ -305,17 +128,43 @@ void thresh_callback(int, void*)
 	/// Detect edges using canny
 	Canny(src_gray, canny_output, thresh, thresh * 2, 3);
 	/// Find contours
-	findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+	//findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 	/// Draw contours
-	Mat drawing = Mat::zeros(canny_output.size(), CV_8UC3);
-	for (int i = 0; i< contours.size(); i++)
+	Mat drawing = canny_output;//Mat::zeros(canny_output.size(), CV_8UC3);
+	/*for (int i = 0; i< contours.size(); i++)
 	{
 		Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 		drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
-	}
+	}*/
 
 	/// Show in a window
 	namedWindow("Contours", CV_WINDOW_AUTOSIZE);
 	imshow("Contours", drawing);
+
+	contour_image = cvCloneImage(&(IplImage)drawing);
+}
+
+void brush_callback(int, void*) {
+
+}
+
+void on_mouse(int event, int x, int y, int flags, void* zhang)
+{
+	if (!contour_image)
+		return;
+
+	if (event == CV_EVENT_LBUTTONUP || !(flags & CV_EVENT_FLAG_LBUTTON))
+		prev_pt = cvPoint(-1, -1);
+	else if (event == CV_EVENT_LBUTTONDOWN)
+		prev_pt = cvPoint(x, y);
+	else if (event == CV_EVENT_MOUSEMOVE && (flags & CV_EVENT_FLAG_LBUTTON))
+	{
+		CvPoint pt = cvPoint(x, y);
+		if (prev_pt.x < 0)
+			prev_pt = pt;
+		cvLine(contour_image, prev_pt, pt, cvScalarAll(color), brush_size, 8, 0);
+		prev_pt = pt;
+		cvShowImage("Contours", contour_image);
+	}
 }
